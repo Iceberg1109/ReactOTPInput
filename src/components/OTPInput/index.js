@@ -122,6 +122,33 @@ const OTPInput = (props) => {
     [activeInput, changeCodeAtFocus, focusNextInput, focusPrevInput, otpValues]
   );
 
+  const handleOnPaste = useCallback(
+    (e) => {
+      e.preventDefault();
+      const pastedData = e.clipboardData
+        .getData("text/plain")
+        .trim()
+        .slice(0, length - activeInput)
+        .split("");
+      if (pastedData) {
+        let nextFocusIndex = 0;
+        const updatedOTPValues = [...otpValues];
+        updatedOTPValues.forEach((val, index) => {
+          if (index >= activeInput) {
+            const changedValue = getOnlyNumber(pastedData.shift() || val);
+            if (changedValue) {
+              updatedOTPValues[index] = changedValue;
+              nextFocusIndex = index;
+            }
+          }
+        });
+        setOTPValues(updatedOTPValues);
+        setActiveInput(Math.min(nextFocusIndex + 1, length - 1));
+      }
+    },
+    [activeInput, getOnlyNumber, length, otpValues]
+  );
+
   return (
     <div {...rest}>
       {Array(length)
@@ -135,6 +162,7 @@ const OTPInput = (props) => {
             onChange={handleOnChange}
             onBlur={onBlur}
             onKeyDown={handleOnKeyDown}
+            onPaste={handleOnPaste}
             style={inputStyle}
             className={inputClassName}
             disabled={disabled}
