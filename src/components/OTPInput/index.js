@@ -8,6 +8,7 @@ const OTPInput = (props) => {
     onChangeOTP,
     inputClassName,
     inputStyle,
+    error,
     ...rest
   } = props;
 
@@ -150,25 +151,27 @@ const OTPInput = (props) => {
   );
 
   return (
-    <div {...rest}>
-      {Array(length)
-        .fill("")
-        .map((_, index) => (
-          <SingleInput
-            key={`SingleInput-${index}`}
-            focus={activeInput === index}
-            value={otpValues && otpValues[index]}
-            onFocus={handleOnFocus(index)}
-            onChange={handleOnChange}
-            onBlur={onBlur}
-            onKeyDown={handleOnKeyDown}
-            onPaste={handleOnPaste}
-            style={inputStyle}
-            className={inputClassName}
-            disabled={disabled}
-          />
-        ))}
-    </div>
+    <>
+      <div {...rest}>
+        {Array(length)
+          .fill("")
+          .map((_, index) => (
+            <SingleInput
+              key={`SingleInput-${index}`}
+              focus={activeInput === index}
+              value={otpValues && otpValues[index]}
+              onFocus={handleOnFocus(index)}
+              onChange={handleOnChange}
+              onBlur={onBlur}
+              onKeyDown={handleOnKeyDown}
+              onPaste={handleOnPaste}
+              style={inputStyle}
+              className={inputClassName}
+            />
+          ))}
+      </div>
+      {!!error && <label style={{ color: "red" }}>{error}</label>}
+    </>
   );
 };
 
