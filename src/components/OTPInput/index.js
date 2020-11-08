@@ -53,6 +53,17 @@ const OTPInput = (props) => {
     [focusInput]
   );
 
+  // Change OTP value at focussing input
+  const changeCodeAtFocus = useCallback(
+    (str) => {
+      const updatedOTPValues = [...otpValues];
+      updatedOTPValues[activeInput] = str[0] || "";
+      setOTPValues(updatedOTPValues);
+      handleOtpChange(updatedOTPValues);
+    },
+    [activeInput, handleOtpChange, otpValues]
+  );
+
   // Handle onChange value for each input
   const handleOnChange = useCallback(
     (e) => {
@@ -61,20 +72,55 @@ const OTPInput = (props) => {
         e.preventDefault();
         return;
       }
-      const updatedOTPValues = [...otpValues];
-      updatedOTPValues[activeInput] = val[0] || "";
-      setOTPValues(updatedOTPValues);
-      handleOtpChange(updatedOTPValues);
 
+      changeCodeAtFocus(val);
       focusNextInput();
     },
-    [focusNextInput, getOnlyNumber, activeInput, handleOtpChange, otpValues]
+    [changeCodeAtFocus, focusNextInput, getOnlyNumber]
   );
 
   // Hanlde onBlur input
   const onBlur = useCallback(() => {
     setActiveInput(-1);
   }, []);
+
+  // Handle onKeyDown input
+  const handleOnKeyDown = useCallback(
+    (e) => {
+      switch (e.key) {
+        case "Backspace":
+          e.preventDefault();
+          if (otpValues[activeInput]) {
+            changeCodeAtFocus("");
+          } else {
+            focusPrevInput();
+          }
+          break;
+        case "Delete":
+          e.preventDefault();
+          if (otpValues[activeInput]) {
+            changeCodeAtFocus("");
+          } else {
+            focusNextInput();
+          }
+          break;
+        case "ArrowLeft":
+          e.preventDefault();
+          focusPrevInput();
+          break;
+        case "ArrowRight":
+          e.preventDefault();
+          focusNextInput();
+          break;
+        case " ":
+          e.preventDefault();
+          break;
+        default:
+          break;
+      }
+    },
+    [activeInput, changeCodeAtFocus, focusNextInput, focusPrevInput, otpValues]
+  );
 
   return (
     <div {...rest}>
@@ -88,6 +134,7 @@ const OTPInput = (props) => {
             onFocus={handleOnFocus(index)}
             onChange={handleOnChange}
             onBlur={onBlur}
+            onKeyDown={handleOnKeyDown}
             style={inputStyle}
             className={inputClassName}
             disabled={disabled}
