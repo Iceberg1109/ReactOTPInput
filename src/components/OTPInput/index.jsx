@@ -167,10 +167,12 @@ const OTPInput = (props) => {
               onPaste={handleOnPaste}
               style={inputStyle}
               className={inputClassName}
+              error={error && otpValues[index] === ""}
+              data-testid={`otp-input-${index}`}
             />
           ))}
       </div>
-      {!!error && <label style={{ color: "red" }}>{error}</label>}
+      <div>{!!error && <label style={{ color: "red" }}>{error}</label>}</div>
     </>
   );
 };

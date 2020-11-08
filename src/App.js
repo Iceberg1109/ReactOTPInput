@@ -1,16 +1,18 @@
-import OTPInput from "./components/OTPInput";
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Success from "./pages/Success";
+
 import "./App.css";
 
 function App() {
   return (
-    <div className="App">
-      <OTPInput
-        length={6}
-        className="otpContainer"
-        inputClassName="otpInput"
-        onChangeOTP={(otp) => console.log("Number OTP: ", otp)}
-      />
-    </div>
+    <Router>
+      <Switch>
+        <Route exact path="/success" component={Success} />
+        <Route path="/" component={Home} />
+      </Switch>
+    </Router>
   );
 }
 
