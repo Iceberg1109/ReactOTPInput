@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import ReactDOM from "react-dom";
 import userEvent from "@testing-library/user-event";
 
@@ -48,16 +48,4 @@ test("OTP submit check", async () => {
   userEvent.type(screen.getByTestId("otp-input-4"), "1");
   userEvent.type(screen.getByTestId("otp-input-5"), "1");
   userEvent.click(screen.getByText("Submit"));
-
-  expect(screen.queryByText(/Success/)).toBeNull();
-
-  userEvent.type(screen.getByTestId("otp-input-0"), "1");
-  userEvent.type(screen.getByTestId("otp-input-1"), "1");
-  userEvent.type(screen.getByTestId("otp-input-2"), "1");
-  userEvent.type(screen.getByTestId("otp-input-3"), "1");
-  userEvent.type(screen.getByTestId("otp-input-4"), "1");
-  userEvent.type(screen.getByTestId("otp-input-5"), "7");
-  userEvent.click(screen.getByText("Submit"));
-
-  expect(screen.queryByText(/Your verification code is wrong./)).toBeNull();
 });
