@@ -1,7 +1,7 @@
 # OTP verification Input
 
 The front end is built by React.
-You can check it at https://github.com/facebook/create-react-app
+You can check it at https://react-otp-input-drab.vercel.app/
 
 ## Features
 
